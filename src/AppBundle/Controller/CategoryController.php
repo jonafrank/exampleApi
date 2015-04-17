@@ -9,6 +9,11 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\HttpFoundation\Response;
 
+/**
+ * Class CategoryController
+ * @package AppBundle\Controller
+ * @Route("/api")
+ */
 class CategoryController extends DefaultController
 {
 
@@ -104,9 +109,6 @@ class CategoryController extends DefaultController
     public function updateCategory(Request $request)
     {
         $data = json_decode($request->getContent(), true);
-        if (!array_key_exists('name', $data)) {
-            return $this->createParameterMissingResponse('name');
-        }
         $category = $this->getDoctrine()->getRepository('AppBundle:Category')->find($request->attributes->get('id'));
         if (!$category) {
             return $this->createNotFoundResponse($request->attributes->get('id'), 'Category');
@@ -118,7 +120,9 @@ class CategoryController extends DefaultController
         }
 
         $em = $this->getDoctrine()->getManager();
-        $category->setName($data['name']);
+        if (array_key_exists('name', $data)) {
+            $category->setName($data['name']);
+        }
         $em->persist($category);
         $em->flush();
         return new JsonResponse($category);
@@ -142,6 +146,7 @@ class CategoryController extends DefaultController
         $em->flush();
         return new Response(null,204);
     }
+
 
 
 }

@@ -30,6 +30,7 @@ class Version20150410170543 extends AbstractMigration
         $listsCategories->addColumn('category_id', 'integer');
         $listsCategories->addIndex(array('productlist_id'));
         $listsCategories->addIndex(array('category_id'));
+        $listsCategories->setPrimaryKey(array('productlist_id', 'category_id'));
         $product = $schema->createTable('product');
         $product->addColumn('id', 'integer', array('autoincrement' => true));
         $product->addColumn('category_id', 'integer');

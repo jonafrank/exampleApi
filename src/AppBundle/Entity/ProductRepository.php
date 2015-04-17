@@ -12,4 +12,12 @@ use Doctrine\ORM\EntityRepository;
  */
 class ProductRepository extends EntityRepository
 {
+    public function getAllWithCategories()
+    {
+        return $this->createQueryBuilder('p')
+            ->select('p, c')
+            ->innerJoin('p.category', 'c')
+            ->getQuery()
+            ->getArrayResult();
+    }
 }

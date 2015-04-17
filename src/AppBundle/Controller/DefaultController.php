@@ -40,4 +40,14 @@ class DefaultController extends Controller
         );
         return new JsonResponse($content, 404);
     }
+
+    protected function createInvalidTypeResponse($parameter, $type) {
+        $content = array(
+            'error' => array(
+                'type'    => 'Bad Request - Invalid Type',
+                'message' => 'Parameter \'' . $parameter . '\' type must be ' . $type
+            )
+        );
+        return new JsonResponse($content, 400);
+    }
 }
