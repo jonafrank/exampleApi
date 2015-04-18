@@ -65,9 +65,8 @@ class Version20150413165736 extends AbstractMigration
         $authCode->addForeignKeyConstraint($client, array('client_id'), array('id'));
         $authCode->addForeignKeyConstraint($users, array('user_id'), array('id'));
         $accessToken->addForeignKeyConstraint($client, array('client_id'), array('id'));
-        $accessToken->addForeignKeyConstraint($users, array('user_id'), array('id'));
         $refreshToken->addForeignKeyConstraint($client, array('client_id'), array('id'));
-        $refreshToken->addForeignKeyConstraint($users, array('user_id'), array('id'));
+
     }
 
     /**
