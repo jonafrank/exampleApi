@@ -4,6 +4,7 @@ namespace AppBundle\Controller;
 use AppBundle\Entity\ProductList;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Symfony\Component\BrowserKit\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -124,5 +125,23 @@ class ProductListController extends DefaultController
             return $this->createNotFoundResponse($id, 'ProductList');
         }
         return new JsonResponse($list);
+    }
+
+    /**
+     * @param $id
+     * @return JsonResponse
+     * @Route("/productLists/{id}", name="product_list_delete", requirements={"_format" = "json", "id" = "\d+"})
+     * @Method({"DELETE"})
+     */
+    public function deleteAction($id)
+    {
+        $list = $this->getDoctrine()->getRepository('AppBundle:ProductList')->find($id);
+        if (!$list) {
+            return $this->createNotFoundResponse($id, 'ProductList');
+        }
+        $em = $this->getDoctrine()->getManager();
+        $em->remove($list);
+        $em->flush();
+        return new JsonResponse(null, 204);
     }
 }

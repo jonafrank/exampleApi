@@ -18,7 +18,7 @@ class ProductController extends DefaultController
      * @param Request $request
      * @return JsonResponse
      *
-         * @Route("/categories/{catid}/products", name="product_add", requirements={"_format" = "json", "catid" = "\d+"})
+     * @Route("/categories/{catid}/products", name="product_add", requirements={"_format" = "json", "catid" = "\d+"})
      * @Method({"POST"})
      */
     public function addAction(Request $request)
@@ -120,5 +120,23 @@ class ProductController extends DefaultController
         $em->persist($product);
         $em->flush();
         return new JsonResponse($product);
+    }
+
+    /**
+     * @param $id
+     * @return JsonResponse
+     * @Route("/product/{id}", name="products_delete", requirements={"_format" = "json", "id" = "\d+"})
+     * @Method({"DELETE"})
+     */
+    public function deleteAction($id)
+    {
+        $product = $this->getDoctrine()->getRepository('AppBundle:Product')->find($id);
+        if (!$product) {
+            return $this->createNotFoundResponse($id, 'Product');
+        }
+        $em = $this->getDoctrine()->getManager();
+        $em->remove($product);
+        $em->flush();
+        return new JsonResponse(null, 204);
     }
 }
