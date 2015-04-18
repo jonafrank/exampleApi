@@ -10,7 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="product_list")
  * @ORM\Entity(repositoryClass="AppBundle\Entity\ProductListRepository")
  */
-class ProductList
+class ProductList implements \JsonSerializable
 {
     /**
      * @var integer
@@ -43,6 +43,23 @@ class ProductList
      * @ORM\JoinTable(name="lists_categories")
      */
     private $categories;
+
+    public function jsonSerialize()
+    {
+        $data = array(
+            'id'   => $this->id,
+            'name' => $this->name
+        );
+        $categories = $this->getCategories()->toArray();
+        if (!empty($categories)) {
+            $data['categories'] = $categories;
+        }
+        $products = $this->getProducts()->toArray();
+        if (!empty($products)) {
+            $data['products'] = $products;
+        }
+        return $data;
+    }
 
     /**
      * Get id
@@ -150,4 +167,10 @@ class ProductList
     {
         return $this->categories;
     }
+
+    public static function getAvailableParameters()
+    {
+       return array('name');
+    }
+
 }

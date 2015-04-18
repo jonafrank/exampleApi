@@ -18,7 +18,7 @@ class ProductController extends DefaultController
      * @param Request $request
      * @return JsonResponse
      *
-     * @Route("/categories/{catid}/products", name="product_add", requirements={"_format" = "json", "catid" = "\d+"})
+         * @Route("/categories/{catid}/products", name="product_add", requirements={"_format" = "json", "catid" = "\d+"})
      * @Method({"POST"})
      */
     public function addAction(Request $request)
@@ -121,5 +121,4 @@ class ProductController extends DefaultController
         $em->flush();
         return new JsonResponse($product);
     }
-
 }

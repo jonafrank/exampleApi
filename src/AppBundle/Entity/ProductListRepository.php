@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\Query;
 
 /**
  * ListRepository
@@ -12,4 +13,15 @@ use Doctrine\ORM\EntityRepository;
  */
 class ProductListRepository extends EntityRepository
 {
+    public function getById($id)
+    {
+        return $this->createQueryBuilder('pl')
+            ->select('pl, p, c')
+            ->leftJoin('products', 'p')
+            ->leftJoin('categories', 'c')
+            ->where('id = :id')
+            ->setParameter('id', $id)
+            ->getQuery()
+            ->getOneOrNullResult(Query::HYDRATE_ARRAY);
+    }
 }
